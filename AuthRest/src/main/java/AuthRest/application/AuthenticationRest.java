@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 
 import org.osgi.service.component.annotations.Reference;
 
-@Path("/testrest")
+@Path("/authuser")
 public class AuthenticationRest {
 	@Reference
 	private UserLocalServiceUtil userutil;
@@ -25,13 +25,13 @@ public class AuthenticationRest {
 	@Produces("application/json")
 	public String addUser(UserRest usr) throws PortalException {
 	
-		long[] groupIds = {37729} ;
+		long[] groupIds = {37529} ;
 		
 		long[] organizationIds = null;
 		long[] roleIds = null;
 		long[] userGroupIds = null;
 		boolean sendEmail = false;
-		long compayid =37701;
+		long compayid =37501;
 		long a=0 ;
 		long b=0 ;
 	
@@ -44,7 +44,7 @@ public class AuthenticationRest {
 //			                            null, false, null);
 		
 		User user = userutil.addUserWithWorkflow(
-				37735, compayid, false, usr.getPassword(), usr.getPassword(),
+				37535, compayid, false, usr.getPassword(), usr.getPassword(),
 				true, usr.getScreenName(), usr.getEmail(), b, null, LocaleUtil.fromLanguageId("en_US"), usr.getFirstname(), " ",
 				usr.getLastname(), a, b, usr.isSexe(), usr.getBirthmonth(), usr.getBirthday(),
 				usr.getBirthyear(), usr.getJob_title(),groupIds, organizationIds, roleIds,
@@ -53,17 +53,18 @@ public class AuthenticationRest {
 	//
 		System.out.println(user.isSetupComplete());
 	
-		
-		 User pass =userutil.getUser(37735);
-		 System.out.println(pass.isSetupComplete());
-		 System.out.println(pass.getPassword());
+//		
+//		 User pass =userutil.getUser(37735);
+//		 System.out.println(pass.isSetupComplete());
+//		 System.out.println(pass.getPassword());
 		return user.getFirstName();
 	}
 	
+	@Path("/signuser")
 	@POST
     @Produces("application/json")
     public boolean login(LoginRest loginRest) throws Exception {
-        long companyId = 37510;
+        long companyId = 37501;
         String login = loginRest.getLogin();
         String password = loginRest.getPassword();
 
