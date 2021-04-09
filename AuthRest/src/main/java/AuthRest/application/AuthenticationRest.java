@@ -1,5 +1,7 @@
 package AuthRest.application;
 
+import com.liferay.commerce.account.model.CommerceAccount;
+import com.liferay.commerce.account.service.CommerceAccountLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
@@ -26,7 +28,10 @@ public class AuthenticationRest {
     private User user;
 
     @Reference
-    AuthenticatedSessionManagerUtil authenticatedSessionManagerUtil;
+    private AuthenticatedSessionManagerUtil authenticatedSessionManagerUtil;
+
+    @Reference
+    private CommerceAccountLocalServiceUtil commerceAccountLocalServiceUtil;
 	
 	@Path("/signup")
 	@POST
@@ -34,38 +39,31 @@ public class AuthenticationRest {
 	public String addUser(UserRest usr) throws PortalException {
 	
 		long[] groupIds = {37529} ;
-		
 		long[] organizationIds = null;
 		long[] roleIds = null;
 		long[] userGroupIds = null;
 		boolean sendEmail = false;
-		long userid = 37535;
+		long creatorid = 37535;
 		long companyid =37501;
 		long a=0 ;
 		long b=0 ;
+	    ServiceContext serviceContext = (ServiceContext) new ServiceContext();
 	
-	ServiceContext serviceContext = (ServiceContext) new ServiceContext();
-	
- System.out.println(serviceContext.getUserId());
-//	User user =userk.addUserWithWorkflow (37701, false, usr.getPassword(), usr.getPassword(), true, usr.getScreenName(), usr.getEmail(),
-//			                             null, null, null, usr.getFirstname(), null, usr.getLastname(), null, null, usr.isSexe(), usr.getBirthmonth(), 
-//			                             usr.getBirthday(), usr.getBirthyear(), usr.getJob_title(), null, null, 37714, 
-//			                            null, false, null);
+         System.out.println(serviceContext.getUserId());
 		
 		User user = userLocalServiceUtil.addUserWithWorkflow(
-				userid, companyid, false, usr.getPassword(), usr.getPassword(),
+				creatorid, companyid, false, usr.getPassword(), usr.getPassword(),
 				true, usr.getScreenName(), usr.getEmail(), b, null, LocaleUtil.fromLanguageId("en_US"), usr.getFirstname(), " ",
 				usr.getLastname(), a, b, usr.isSexe(), usr.getBirthmonth(), usr.getBirthday(),
 				usr.getBirthyear(), usr.getJob_title(),groupIds, organizationIds, roleIds,
 				userGroupIds, sendEmail,(ServiceContext) serviceContext.clone());
+
 		user.setStatus(WorkflowConstants.STATUS_APPROVED);
-	//
 		System.out.println(user.isSetupComplete());
-	
-//		
-//		 User pass =userutil.getUser(37735);
-//		 System.out.println(pass.isSetupComplete());
-//		 System.out.println(pass.getPassword());
+
+        CommerceAccount commerceAccount = commerceAccountLocalServiceUtil.addPersonalCommerceAccount(user.getUserId(),null,null,
+              serviceContext);
+
 		return user.getFirstName();
 	}
 	
