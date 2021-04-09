@@ -20,8 +20,8 @@ import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
  */
 @Component(
 	property = {
-		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_BASE + "=/auttheticationrest",
-		JaxrsWhiteboardConstants.JAX_RS_NAME + "=auttheticationrest.Rest"
+		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_BASE + "=/authapi",
+		JaxrsWhiteboardConstants.JAX_RS_NAME + "=authapi.Rest"
 	},
 	service = Application.class
 )

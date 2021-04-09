@@ -2,6 +2,7 @@ package AuthRest.application;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -15,12 +16,19 @@ import javax.ws.rs.Produces;
 
 import org.osgi.service.component.annotations.Reference;
 
-@Path("/authuser")
+@Path("/authentification")
 public class AuthenticationRest {
-	@Reference
-	private UserLocalServiceUtil userutil;
+
+    @Reference
+    private UserLocalServiceUtil userLocalServiceUtil;
+
+    @Reference
+    private User user;
+
+    @Reference
+    AuthenticatedSessionManagerUtil authenticatedSessionManagerUtil;
 	
-	@Path("/postuser")
+	@Path("/signup")
 	@POST
 	@Produces("application/json")
 	public String addUser(UserRest usr) throws PortalException {
@@ -31,7 +39,8 @@ public class AuthenticationRest {
 		long[] roleIds = null;
 		long[] userGroupIds = null;
 		boolean sendEmail = false;
-		long compayid =37501;
+		long userid = 37535;
+		long companyid =37501;
 		long a=0 ;
 		long b=0 ;
 	
@@ -43,8 +52,8 @@ public class AuthenticationRest {
 //			                             usr.getBirthday(), usr.getBirthyear(), usr.getJob_title(), null, null, 37714, 
 //			                            null, false, null);
 		
-		User user = userutil.addUserWithWorkflow(
-				37535, compayid, false, usr.getPassword(), usr.getPassword(),
+		User user = userLocalServiceUtil.addUserWithWorkflow(
+				userid, companyid, false, usr.getPassword(), usr.getPassword(),
 				true, usr.getScreenName(), usr.getEmail(), b, null, LocaleUtil.fromLanguageId("en_US"), usr.getFirstname(), " ",
 				usr.getLastname(), a, b, usr.isSexe(), usr.getBirthmonth(), usr.getBirthday(),
 				usr.getBirthyear(), usr.getJob_title(),groupIds, organizationIds, roleIds,
@@ -60,15 +69,16 @@ public class AuthenticationRest {
 		return user.getFirstName();
 	}
 	
-	@Path("/signuser")
+	@Path("/login")
 	@POST
     @Produces("application/json")
     public boolean login(LoginRest loginRest) throws Exception {
         long companyId = 37501;
+        String loginIP = "127.0.0.1";
         String login = loginRest.getLogin();
         String password = loginRest.getPassword();
 
-        List<User> users = userutil.getUsers(-1, -1);
+        List<User> users = userLocalServiceUtil.getUsers(-1, -1);
         boolean trouve = false;
         for (User user : users
         ) {
@@ -77,20 +87,22 @@ public class AuthenticationRest {
                 break;
             }
         }
-
         if (trouve) {
             try {
-                long userId = userutil.getUserIdByEmailAddress(companyId, login);
-                User user = userutil.getUser(userId);
+                long userId = userLocalServiceUtil.getUserIdByEmailAddress(companyId, login);
+                User user = userLocalServiceUtil.getUser(userId);
                 String pw = user.getPassword().substring(6);
-                return pw.equals(password);
-
-
+                if (pw.equals(password)) {
+                    userLocalServiceUtil.updateLastLogin(userId, loginIP);
+                   /* authenticatedSessionManagerUtil.login();
+                    long message = authenticatedSessionManagerUtil.getAuthenticatedUserId();
+                    System.out.println(message);*/
+                    return true;
+                }
+                return false;
             } catch (Exception e) {
                 return false;
-
             }
-
         }
         return false;
     }
