@@ -9,6 +9,7 @@ public class UserRest {
 	private long id;
 	private String firstname;
 	private String lastname;
+	private String screenName;
 	private String email;
 	private String password;
 	private int birthday;
@@ -16,7 +17,38 @@ public class UserRest {
 	private int birthyear;
 	private String job_title;
 	private boolean sexe;
-	private String screenName;
+	private String mobile;
+	private String address;
+	private String city;
+	private String country;
+	private String facebookSn;
+	private String skypeSn;
+	private String twitterSn;
+	private String points;
+	private boolean Auth;
+
+
+
+	public UserRest() {
+		super();
+	}
+
+	public UserRest (User us) throws PortalException {
+		id=us.getUserId();
+		firstname=us.getFirstName();
+		lastname=us.getLastName();
+		screenName=us.getScreenName();
+		email=us.getEmailAddress();
+		password=us.getPassword();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(us.getBirthday());
+		birthday= calendar.get(Calendar.DAY_OF_MONTH);
+		birthmonth=calendar.get(Calendar.MONTH);
+		birthyear=calendar.get(Calendar.YEAR);
+		job_title=us.getJobTitle();
+		sexe=us.getMale();
+		Auth=false;
+	}
 	
 	public String getScreenName() {
 		return screenName;
@@ -84,28 +116,30 @@ public class UserRest {
 	public void setSexe(boolean sexe) {
 		this.sexe = sexe;
 	}
+	public String getMobile() { return mobile; }
+	public void setMobile(String mobile) { this.mobile = mobile; }
+	public String getAddress() {return address;}
+	public void setAddress(String address) { this.address = address; }
+	public String getCity() {return city; }
+	public void setCity(String city) { this.city = city; }
+	public String getCountry() { return country; }
+	public void setCountry(String country) { this.country = country; }
+	public String getFacebookSn() { return facebookSn; }
+	public void setFacebookSn(String facebookSn) { this.facebookSn = facebookSn; }
+	public String getSkypeSn() { return skypeSn; }
+	public void setSkypeSn(String skypeSn) { this.skypeSn = skypeSn; }
+	public String getTwitterSn() { return twitterSn; }
+	public void setTwitterSn(String twitterSn) { this.twitterSn = twitterSn; }
+	public String getPoints() { return points; }
+	public void setPoints(String points) { this.points = points; }
+	public boolean isAuth() { return Auth; }
+	public void setAuth(boolean auth) { Auth = auth; }
+
 	@Override
 	public String toString() {
 		return "UserRest [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
 				+ ", password=" + password + ", birthday=" + birthday + ", birthmonth=" + birthmonth + ", birthyear="
 				+ birthyear + ", job_title=" + job_title + ", sexe=" + sexe + "]";
 	}
-	public UserRest() {
-		super();
-	}
-	
-	public UserRest (User us) throws PortalException {
-		id=us.getUserId();
-		firstname=us.getFirstName();		
-		lastname=us.getLastName();
-		email=us.getEmailAddress();
-		password=us.getPassword();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(us.getBirthday());
-		birthday= calendar.get(Calendar.DAY_OF_MONTH);
-		birthmonth=calendar.get(Calendar.MONTH);
-		birthyear=calendar.get(Calendar.YEAR);
-		job_title=us.getJobTitle();		
-		sexe=us.getMale();
-	}
+
 }

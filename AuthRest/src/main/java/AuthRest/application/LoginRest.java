@@ -3,7 +3,6 @@ package AuthRest.application;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class LoginRest {
 
     private String login;

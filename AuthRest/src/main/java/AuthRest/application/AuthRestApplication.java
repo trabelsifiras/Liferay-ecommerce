@@ -32,8 +32,12 @@ public class AuthRestApplication extends Application {
         singletons.add(new JacksonJsonProvider());
 
         singletons.add(new AuthenticationRest());
-        return singletons;
+
+		singletons.add(new CorsFilter());
+
+		return singletons;
 	}
+
 
 	@GET
 	@Produces("text/plain")

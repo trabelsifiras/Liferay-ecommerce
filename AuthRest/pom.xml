@@ -119,7 +119,14 @@
             <artifactId>release.portal.api</artifactId>
             <version>7.3.5-ga6</version>
         </dependency>
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/com.liferay/com.liferay.portal.remote.cors.api -->
+		<dependency>
+			<groupId>com.liferay</groupId>
+			<artifactId>com.liferay.portal.remote.cors.api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

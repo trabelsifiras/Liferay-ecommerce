@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.POST;
@@ -32,43 +33,43 @@ public class AuthenticationRest {
 
     @Reference
     private CommerceAccountLocalServiceUtil commerceAccountLocalServiceUtil;
-	
-	@Path("/signup")
-	@POST
-	@Produces("application/json")
-	public String addUser(UserRest usr) throws PortalException {
-	
-		long[] groupIds = {37529} ;
-		long[] organizationIds = null;
-		long[] roleIds = null;
-		long[] userGroupIds = null;
-		boolean sendEmail = false;
-		long creatorid = 37535;
-		long companyid =37501;
-		long a=0 ;
-		long b=0 ;
-	    ServiceContext serviceContext = (ServiceContext) new ServiceContext();
-	
-         System.out.println(serviceContext.getUserId());
-		
-		User user = userLocalServiceUtil.addUserWithWorkflow(
-				creatorid, companyid, false, usr.getPassword(), usr.getPassword(),
-				true, usr.getScreenName(), usr.getEmail(), b, null, LocaleUtil.fromLanguageId("en_US"), usr.getFirstname(), " ",
-				usr.getLastname(), a, b, usr.isSexe(), usr.getBirthmonth(), usr.getBirthday(),
-				usr.getBirthyear(), usr.getJob_title(),groupIds, organizationIds, roleIds,
-				userGroupIds, sendEmail,(ServiceContext) serviceContext.clone());
 
-		user.setStatus(WorkflowConstants.STATUS_APPROVED);
-		System.out.println(user.isSetupComplete());
+    @Path("/signup")
+    @POST
+    @Produces("application/json")
+    public String addUser(UserRest usr) throws PortalException {
+
+        long[] groupIds = {37529} ;
+        long[] organizationIds = null;
+        long[] roleIds = null;
+        long[] userGroupIds = null;
+        boolean sendEmail = false;
+        long creatorid = 37535;
+        long companyid =37501;
+        long a=0 ;
+        long b=0 ;
+        ServiceContext serviceContext = (ServiceContext) new ServiceContext();
+
+        System.out.println(serviceContext.getUserId());
+
+        User user = userLocalServiceUtil.addUserWithWorkflow(
+                creatorid, companyid, false, usr.getPassword(), usr.getPassword(),
+                true, usr.getScreenName(), usr.getEmail(), b, null, LocaleUtil.fromLanguageId("en_US"), usr.getFirstname(), " ",
+                usr.getLastname(), a, b, usr.isSexe(), usr.getBirthmonth(), usr.getBirthday(),
+                usr.getBirthyear(), usr.getJob_title(),groupIds, organizationIds, roleIds,
+                userGroupIds, sendEmail,(ServiceContext) serviceContext.clone());
+
+        user.setStatus(WorkflowConstants.STATUS_APPROVED);
+        System.out.println(user.isSetupComplete());
 
         CommerceAccount commerceAccount = commerceAccountLocalServiceUtil.addPersonalCommerceAccount(user.getUserId(),null,null,
-              serviceContext);
+                serviceContext);
 
-		return user.getFirstName();
-	}
-	
-	@Path("/login")
-	@POST
+        return user.getFirstName();
+    }
+
+    @Path("/login")
+    @POST
     @Produces("application/json")
     public boolean login(LoginRest loginRest) throws Exception {
         long companyId = 37501;
@@ -95,13 +96,49 @@ public class AuthenticationRest {
                    /* authenticatedSessionManagerUtil.login();
                     long message = authenticatedSessionManagerUtil.getAuthenticatedUserId();
                     System.out.println(message);*/
+                    UserRest userRest = new UserRest();
+                    userRest.setFirstname(user.getFirstName());
+                    userRest.setLastname(user.getLastName());
+                    userRest.setEmail(user.getEmailAddress());
+                    userRest.setBirthday(user.getBirthday().getDate());
+                    userRest.setBirthmonth(user.getBirthday().getMonth());
+                    userRest.setBirthyear(user.getBirthday().getYear());
+                    userRest.setJob_title(user.getJobTitle());
+                    userRest.setSexe(user.getMale());
+                    userRest.setMobile("12345");
+                    userRest.setAddress("Tunis");
+                    userRest.setCity("Ariana");
+                    userRest.setCountry("Tunisia");
+                    userRest.setFacebookSn("fb");
+                    userRest.setSkypeSn("sk");
+                    userRest.setTwitterSn("tw");
+                    userRest.setPoints("20");
+                    userRest.setAuth(true);
+
+
+                    System.out.println(userRest);
+                    System.out.println(login);
+                    System.out.println(password);
                     return true;
+
                 }
+                //incorrect password
+                System.out.println("1");
+                System.out.println(login);
+                System.out.println(password);
                 return false;
-            } catch (Exception e) {
+            } catch (ArithmeticException e) {
+                //portal exception
+                System.out.println("2");
+                System.out.println(login);
+                System.out.println(password);
                 return false;
             }
         }
+        //incorrect email
+        System.out.println("3");
+        System.out.println(login);
+        System.out.println(password);
         return false;
     }
 
