@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { ShopCategory } from '../../interfaces/category';
 import { Product } from '../../interfaces/product';
 import { Brand } from '../../interfaces/brand';
-import { ProductsList, ReviewsList } from '../../interfaces/list';
+import { CategoriesList, ProductsList, ReviewsList } from '../../interfaces/list';
 import { Review } from '../../interfaces/review';
 import { Order } from '../../interfaces/order';
 import { AddressData } from '../../interfaces/address';
@@ -25,14 +25,14 @@ export interface GetProductsListOptions {
     page?: number;
     limit?: number;
     sort?: string;
-    filters?: {[slug: string]: string};
+    filters?: { [slug: string]: string };
 }
 
 export interface GetProductReviewsOptions {
     page?: number;
     limit?: number;
     sort?: string;
-    filters?: {[slug: string]: string};
+    filters?: { [slug: string]: string };
 }
 
 export interface AddProductReviewData {
@@ -108,9 +108,13 @@ export abstract class ShopApi {
 
     abstract getProductById(id: number): Observable<Product>;
 
-    abstract getProductsList2(options?: GetProductsListOptions): Observable<ProductsList>;
+    // abstract getProductsList2(options?: GetProductsListOptions): Observable<ProductsList>;
 
-    abstract getListProducts(options?: GetProductsListOptions): Observable<ProductsList>;
+    // abstract getListProducts(options?: GetProductsListOptions): Observable<ProductsList>;
 
-    abstract getCategories2(options?: GetCategoriesOptions): Observable<ShopCategory[]>;
+    // abstract getCategories2(options?: GetCategoriesOptions): Observable<ShopCategory[]>;
+
+    abstract getCategories3(options?: GetCategoriesOptions): Observable<CategoriesList>;
+
+    abstract getCategoryById(id: number, options?: GetCategoryBySlugOptions): Observable<ShopCategory>;
 }

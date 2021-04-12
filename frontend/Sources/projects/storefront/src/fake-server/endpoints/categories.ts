@@ -33,6 +33,7 @@ export function getCategoryBySlug(slug: string, options?: GetCategoryBySlugOptio
 
 export function getCategories(options?: GetCategoriesOptions): Observable<ShopCategory[]> {
     let categories = shopCategoriesTree.slice(0);
+    console.log("categories 1: ",categories)
     const depth = options.depth || 0;
 
     if (options.parent) {
@@ -40,12 +41,16 @@ export function getCategories(options?: GetCategoriesOptions): Observable<ShopCa
 
         if (parent) {
             categories = parent.children;
+            console.log("categories 2: ",categories)
         }
     } else if (options.slugs) {
         categories = shopCategoriesList.filter(x => options.slugs.includes(x.slug));
+        console.log("categories 2: ",categories)
+
     }
 
     categories = categories.map(x => prepareCategory(x, depth));
+    console.log("categories 3: ",categories)
 
     return of(clone(categories));
 }

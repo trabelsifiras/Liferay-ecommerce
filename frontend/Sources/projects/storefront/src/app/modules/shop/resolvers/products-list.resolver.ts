@@ -39,7 +39,7 @@ export class ProductsListResolver implements Resolve<ProductsList> {
         //     },
         // });
 
-        return this.shop.getProductsList2({
+        return this.shop.getProductsList({
             ...options,
             filters: {
                 ...options.filters,

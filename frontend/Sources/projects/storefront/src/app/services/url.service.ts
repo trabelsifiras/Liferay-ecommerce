@@ -29,6 +29,8 @@ export class UrlService {
 
     shopCategory(category: ShopCategory): string {
         return `/shop/category/${category.slug}` + (category.layout === 'products' ? '/products' : '');
+        // return `/shop/category/${category.id}` + (category.layout === 'products' ? '/products' : '');
+
     }
 
     allProducts(): string {
@@ -37,6 +39,8 @@ export class UrlService {
 
     product(product: Product): string {
         return `/shop/products/${product.slug}`;
+        // return `/shop/products/${product.id}`;
+
     }
 
     brand(brand: Brand): string {

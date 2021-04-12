@@ -16,6 +16,10 @@ export class ProductResolver implements Resolve<Product> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product> {
         const slug = route.params.productSlug || route.data.productSlug;
 
+        const idFromSlug = Number(slug.substring(0, slug.indexOf("-")));
+
+        console.log("route.params.productSlug", slug)
+        console.log("idFromSlug: ", idFromSlug)
         // return this.shop.getProductBySlug(slug).pipe(catchError(error => {
         //     if (error instanceof HttpErrorResponse && error.status === 404) {
         //        this.router.navigateByUrl('/').then();
@@ -27,7 +31,7 @@ export class ProductResolver implements Resolve<Product> {
         // }));
 
         ////////////////////////////////////////////////////
-        return this.shop.getProductById(40025).pipe(catchError(error => {
+        return this.shop.getProductById(idFromSlug).pipe(catchError(error => {
             if (error instanceof HttpErrorResponse && error.status === 404) {
                 this.router.navigateByUrl('/').then();
 

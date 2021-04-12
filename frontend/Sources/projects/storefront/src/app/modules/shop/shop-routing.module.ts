@@ -162,7 +162,7 @@ const routes: Routes = [
             layout: 'grid',
             gridLayout,
             sidebarPosition: 'start',
-            categorySlug: 'headlights-lighting',
+            categorySlug: '39762-brake-system',
         },
     })),
     {
@@ -176,7 +176,7 @@ const routes: Routes = [
             layout: 'list',
             gridLayout: 'grid-4-sidebar',
             sidebarPosition: 'start',
-            categorySlug: 'headlights-lighting',
+            categorySlug: '39762-brake-system',
         },
     },
     {
@@ -190,7 +190,7 @@ const routes: Routes = [
             layout: 'table',
             gridLayout: 'grid-4-sidebar',
             sidebarPosition: 'start',
-            categorySlug: 'headlights-lighting',
+            categorySlug: '39762-brake-system',
         },
     },
     {
@@ -204,7 +204,7 @@ const routes: Routes = [
             layout: 'grid',
             gridLayout: 'grid-4-sidebar',
             sidebarPosition: 'end',
-            categorySlug: 'headlights-lighting',
+            categorySlug: '39762-brake-system',
         },
     },
     // product
@@ -217,7 +217,7 @@ const routes: Routes = [
         data: {
             layout: 'full',
             sidebarPosition: 'start',
-            productSlug: 'brandix-brake-kit-bdx-750z370-s',
+            productSlug: '39917-brake-fluid',
         },
     },
     {
@@ -229,7 +229,7 @@ const routes: Routes = [
         data: {
             layout: 'sidebar',
             sidebarPosition: 'start',
-            productSlug: 'brandix-brake-kit-bdx-750z370-s',
+            productSlug: '39917-brake-fluid',
         },
     },
 ];

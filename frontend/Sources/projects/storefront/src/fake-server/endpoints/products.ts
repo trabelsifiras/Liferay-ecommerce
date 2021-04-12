@@ -41,217 +41,69 @@ function getProducts(shift: number, categorySlug: string = null): Product[] {
 
 
 
-// export function getProductsList2(options?: GetProductsListOptions): Observable<ProductsList> {
-//     return this.http.get<any>(`${urlGetPageProduct}`, httpOptions).pipe(
 
-//         map(pageProduct => ({
-//             filters: [],
+// export function getProductsList(options?: GetProductsListOptions): Observable<ProductsList> {
+//     const filterValues = options.filters || {};
+//     const filters: AbstractFilterBuilder[] = [
+//         new CategoryFilterBuilder('category', 'Categories'),
+//         new VehicleFilterBuilder('vehicle', 'Vehicle'),
+//         new RangeFilterBuilder('price', 'Price'),
+//         new CheckFilterBuilder('brand', 'Brand'),
+//         new RadioFilterBuilder('discount', 'With Discount'),
+//         new RatingFilterBuilder('rating', 'Rating'),
+//         new ColorFilterBuilder('color', 'Color'),
+//     ];
 
-//             items: this.getPageProductsItems(pageProduct.items, pageProduct.totalCount),
-
-//             page: pageProduct.page,
-
-
-//             limit: pageProduct.pageSize,
-
-
-//             sort: 'default',
-
-
-//             total: pageProduct.totalCount,
+//     let products = dbProducts.slice(0);
 
 
-//             pages: pageProduct.lastPage,
 
+    
 
-//             from: (pageProduct.page - 1) * pageProduct.pageSize + 1,
+//     filters.forEach(filter => filter.makeItems(products, filterValues[filter.slug]));
 
+//     // Calculate items count for filter values.
+//     filters.forEach(filter => filter.calc(filters));
 
-//             to: Math.min(pageProduct.page * pageProduct.pageSize, pageProduct.totalCount),
+//     // Apply filters to products list.
+//     products = products.filter(product => filters.reduce((mr, filter) => mr && filter.test(product), true));
 
-//         }))
-//     );
+//     const page = options.page || 1;
+//     const limit = options.limit || 16;
+//     const sort = options.sort || 'default';
+//     const total = products.length;
+//     const pages = Math.ceil(products.length / limit);
+//     const from = (page - 1) * limit + 1;
+//     const to = Math.min(page * limit, total);
+
+//     // Sort items array.
+//     products = products.sort((a, b) => {
+//         if (['name_asc', 'name_desc'].includes(sort)) {
+//             if ( a.name === b.name ) {
+//                 return 0;
+//             }
+
+//             return (a.name > b.name ? 1 : -1) * (sort === 'name_asc' ? 1 : -1);
+//         }
+
+//         return 0;
+//     });
+
+//     const items = products.slice(from - 1, to) as unknown as Array<Product>;
+//     // const items = products;
+
+//     return delayResponse(of({
+//         items,
+//         page,
+//         limit,
+//         sort,
+//         total,
+//         pages,
+//         from,
+//         to,
+//         filters: filters.map(x => x.build()),
+//     }), 350);
 // }
-
-export function getPageProductsItems(items: any[], itemsCount: number): Product[] {
-    
-
-    // let realItems = new Array<Product>(items.length);
-    let realItems: Product[] = new Array<Product>();
-    items.forEach(item => {
-        realItems.push(
-            {
-                id: item.productId,
-                name: item.name.en_US,
-                images: [
-                    'https://techcrunch.com/wp-content/uploads/2018/12/google-search-magnifying-glass.png?w=730&crop=1',
-                    'https://feedmotorsports.com/photos/product/4/176/4.jpg'
-                ],
-
-                badges: ['sale', 'new', 'hot'],
-                rating: 4,
-                reviews: 3,
-                availability: 'in-stock',
-                compatibility: [1, 2],
-                attributes: [],
-                slug: 'some-slug',
-                sku: '145-00007-B',
-                price: 12345,
-
-                options: [
-                    {
-                        type: 'default',
-                        slug: 'material',
-                        name: 'Material',
-                        values: [
-                            { slug: 'steel', name: 'Steel' },
-                            { slug: 'aluminium', name: 'Aluminium' },
-                            { slug: 'thorium', name: 'Thorium' },
-                        ],
-                    },
-                    {
-                        type: 'color',
-                        slug: 'color',
-                        name: 'Color',
-                        values: [
-                            { slug: 'white', name: 'White', color: '#fff' },
-                            { slug: 'yellow', name: 'Yellow', color: '#ffd333' },
-                            { slug: 'red', name: 'Red', color: '#ff4040' },
-                            { slug: 'blue', name: 'Blue', color: '#4080ff' },
-                        ],
-                    },
-                ],
-                tags: ['Brake Kit', 'Brandix', 'Filter', 'Bumper', 'Transmission', 'Hood'],
-
-
-
-                excerpt: `
-                    Ecommerce managers and online store owners all know the importance of product descriptions. but they are still often overlooked and not optimized to their full potential.
-            `,
-                description: 'some description',
-
-                partNumber: 'BDX-750Z370-S',
-                stock: "out-of-stock",
-
-                compareAtPrice: 1234,
-
-
-                brand: null,
-
-                type: {
-                    slug: 'default',
-                    name: 'Default',
-                    attributeGroups: [
-                        {
-                            name: 'General',
-                            slug: 'general',
-                            attributes: [
-                                'speed',
-                                'power-source',
-                                'battery-cell-type',
-                                'voltage',
-                                'battery-capacity',
-                                'material',
-                                'engine-type',
-                            ],
-                        },
-                        {
-                            name: 'Dimensions',
-                            slug: 'dimensions',
-                            attributes: [
-                                'length',
-                                'width',
-                                'height',
-                            ],
-                        },
-                    ],
-                },
-                categories: [],
-
-                customFields: {
-                    active: item.active,
-                },
-            }
-        )
-    })
-    console.log(realItems)
-    // realItems.fill(someProduct);
-    // console.log(realItems)
-    // for (let i = 0; i < items.length; i++) {
-    //     console.log(items[i].productId)
-    //     realItems[i].id = items[i].productId;
-    //     // realItems[i].name = items[i].name.en_US;
-    //     // realItems[i].customFields.active = items[i].active;
-    // }
-    // console.log(realItems)
-
-    realItems.slice(0, 20) as unknown as Array<Product>;
-    return realItems;
-}
-
-
-export function getProductsList(options?: GetProductsListOptions): Observable<ProductsList> {
-    const filterValues = options.filters || {};
-    const filters: AbstractFilterBuilder[] = [
-        new CategoryFilterBuilder('category', 'Categories'),
-        new VehicleFilterBuilder('vehicle', 'Vehicle'),
-        new RangeFilterBuilder('price', 'Price'),
-        new CheckFilterBuilder('brand', 'Brand'),
-        new RadioFilterBuilder('discount', 'With Discount'),
-        new RatingFilterBuilder('rating', 'Rating'),
-        new ColorFilterBuilder('color', 'Color'),
-    ];
-
-    let products = dbProducts.slice(0);
-
-
-
-    
-
-    filters.forEach(filter => filter.makeItems(products, filterValues[filter.slug]));
-
-    // Calculate items count for filter values.
-    filters.forEach(filter => filter.calc(filters));
-
-    // Apply filters to products list.
-    products = products.filter(product => filters.reduce((mr, filter) => mr && filter.test(product), true));
-
-    const page = options.page || 1;
-    const limit = options.limit || 16;
-    const sort = options.sort || 'default';
-    const total = products.length;
-    const pages = Math.ceil(products.length / limit);
-    const from = (page - 1) * limit + 1;
-    const to = Math.min(page * limit, total);
-
-    // Sort items array.
-    products = products.sort((a, b) => {
-        if (['name_asc', 'name_desc'].includes(sort)) {
-            if ( a.name === b.name ) {
-                return 0;
-            }
-
-            return (a.name > b.name ? 1 : -1) * (sort === 'name_asc' ? 1 : -1);
-        }
-
-        return 0;
-    });
-
-    const items = products.slice(from - 1, to) as unknown as Array<Product>;
-    // const items = products;
-
-    return delayResponse(of({
-        items,
-        page,
-        limit,
-        sort,
-        total,
-        pages,
-        from,
-        to,
-        filters: filters.map(x => x.build()),
-    }), 350);
-}
 
 export function getProductBySlug(slug: string): Observable<Product> {
     const product = dbProducts.find(x => x.slug === slug);
