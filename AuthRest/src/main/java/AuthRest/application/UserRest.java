@@ -139,7 +139,8 @@ public class UserRest {
 	public String toString() {
 		return "UserRest [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
 				+ ", password=" + password + ", birthday=" + birthday + ", birthmonth=" + birthmonth + ", birthyear="
-				+ birthyear + ", job_title=" + job_title + ", sexe=" + sexe + "]";
+				+ birthyear + ", job_title=" + job_title + ", sexe=" + sexe +", address="
+				+ address + ", city=" + city + ", country=" + country + "]";
 	}
 
 }
